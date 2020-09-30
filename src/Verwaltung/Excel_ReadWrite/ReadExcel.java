@@ -3,6 +3,7 @@ package Excel_ReadWrite;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import Verwaltung.Student;
@@ -27,7 +29,10 @@ public class ReadExcel
 
 		Workbook workbook = getWorkbook(inputStream, excelFilePath);
 		Sheet firstSheet = workbook.getSheetAt(0);
+		firstSheet.removeRow(firstSheet.getRow(0));
 		Iterator<Row> iterator = firstSheet.iterator();
+		Row row;
+		
 
 		while (iterator.hasNext()) 
 		{
@@ -58,11 +63,33 @@ public class ReadExcel
 									(String) getCellValue(nextCell)
 									);
 							break;
-						case 3:
-							student.SetGeburtsdatum(
-									 (Object) getCellValue(nextCell)
-									);
+						case 3: // Date Column
+							// Array which holds the splitted Date
+							String TempDateArr[] = getCellValue(nextCell).toString().split(".");
+							if(TempDateArr.length > 1) 
+							{
+								//Creating into a valid format for the Date.valueOf() function
+								String BirthDate =    TempDateArr[2] 
+													+ "-" 
+													+ TempDateArr[1] 
+													+ "-" 
+													+ TempDateArr[0];
+								
+								student.SetGeburtsdatum(
+										 Date.valueOf(
+												 BirthDate
+												 ));
+							}
+							else 
+							{
+								student.SetGeburtsdatum(
+										Date.valueOf(
+												"1990-01-01"
+												)
+										);
+							}
 							break;
+							
 						case 4:
 							student.SetKlassenStufe(
 									(String) getCellValue(nextCell)
@@ -82,11 +109,6 @@ public class ReadExcel
 
 		workbook.close();
 		inputStream.close();
-		
-		for(int i = 0; i < allStudents.size(); i++) 
-		{
-			System.out.print(allStudents.get(i).GetName() + "\n");
-		}
 		
 		return allStudents;
 	}
@@ -109,6 +131,7 @@ public class ReadExcel
 		case BLANK:
 			break;
 		}
+
 
 		return null;
 	}

@@ -1,4 +1,3 @@
- 
 package Verwaltung;
 
 import java.io.File;
@@ -16,8 +15,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -33,7 +30,6 @@ import com.mysql.jdbc.Connection;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 
 
 public class SwtApplicationWindow 
@@ -42,18 +38,21 @@ public class SwtApplicationWindow
     public java.util.List<Student> allStudents = new ArrayList<Student>();
     private Table table_Students;
     private Table table_Classes;
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args) 
+    
+    
+	public static void main(String[] args) throws SQLException 
     {
+		Connection con = null;
 		try 
 		{
-			java.sql.Connection con = Database.Open("localhost", "3306", "root", null);
-			con.close();
+			con = Database.Open("localhost", "3306", "root", null);
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
+		
+		con.close();
     	SwtApplicationWindow window = new SwtApplicationWindow();
     	window.open();
     		
@@ -105,22 +104,23 @@ public class SwtApplicationWindow
         		
         		if (returnVal == JFileChooser.APPROVE_OPTION) 
         		{
-        			
-                    // Get chosen File
-        			File file = fc.getSelectedFile();
-                    
-                    // Caller for the Reader Function
-                    try 
+        			try 
                     {
+        				// Get chosen File
+        				File file = fc.getSelectedFile();
+                   
                     	ReadExcel reader;
                     	reader = new ReadExcel();
+                    	
                     	String path = file.getPath();
+                    	
                     	// Filling up the list
                     	allStudents = reader.readStudentsFromExcelFile(path);
                     	
-                    	for(Student student:allStudents) 
+                    	for(int i = 0; i < allStudents.size(); i++) 
                     	{
-                    		Database.insertNewStudent(Database.Open("localhost", "3306", "root", null), student);
+                    		System.out.print(allStudents.size() + "\n");
+                    		//Database.insertNewStudent(Database.Open("localhost", "3306", "root", null), allStudents.get(i));
                     	}
                     	
 					} 

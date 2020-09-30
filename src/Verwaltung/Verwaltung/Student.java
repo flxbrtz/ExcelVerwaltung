@@ -1,5 +1,7 @@
 package Verwaltung;
 
+import java.sql.Date;
+
 public class Student 
 {
 	private String Vorname;
@@ -7,7 +9,7 @@ public class Student
 	private String Email;
 	private String KlassenStufe;
 	private String KlassenName;
-	private Object Geburtsdatum;
+	private Date Geburtsdatum;
 	private String Geschlecht;
 	
 	// Constructor
@@ -17,7 +19,7 @@ public class Student
 			, String aEmail
 			, String aKlassenStufe
 			, String aKlassenName
-			, Object aGeburtsdatum
+			, Date aGeburtsdatum
 			, String aGeschlecht
 			) 
 	{
@@ -57,7 +59,7 @@ public class Student
 		return KlassenName;
 	}
 	
-	public Object GetGeburtsdatum() 
+	public Date GetGeburtsdatum() 
 	{
 		return Geburtsdatum;
 	}
@@ -94,9 +96,9 @@ public class Student
 		this.KlassenName = NewKlassenName;
 	}
 	
-	public void SetGeburtsdatum(Object object) 
+	public void SetGeburtsdatum(Date NewDate) 
 	{
-		this.Geburtsdatum =  object;
+		this.Geburtsdatum =  NewDate;
 	}
 	
 	public void SetGeschlecht(String NewGeschlecht) 

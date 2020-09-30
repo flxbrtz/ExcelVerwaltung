@@ -31,11 +31,11 @@ public class Database
 																		+ host 
 																		+ ":" 
 																		+ port 
-		 																+ "/exceldatamanagement"
+		 																+ "/excelmanagementdata"
 																		, userName
 																		, password
 																		);
-			System.out.print("connection established");
+			System.out.print("connection established\n\n");
 			return con;
 		
 		} 
@@ -76,28 +76,21 @@ public class Database
 		public static void insertNewStudent(Connection conn, Student student) 
 				throws ClassNotFoundException, SQLException 
 		{			
-			   // JDBC driver name and database URL
-			   final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-			   final String DB_URL = "jdbc:mysql://localhost/exceldatamanagement";
-
-			   //  Database credentials
-			   final String USER = "root";
 			   
-			   Statement stmt = null;
 			   String query = "INSERT INTO schueler ("
-					    + " Name,"
-					    + " Klassenname,"
-					    + " Vorname,"
-					    + " Geburtsdatum,"
-					    + " Klassenstufe,"
-					    + " Geschlecht,"
-					    + " VALUES ("
-					    + "?, ?, ?, ?, ?, ?)";
-			   try {
+					    + "Name,"
+					    + "KlassenBezeichnung,"
+					    + "Vorname,"
+					    + "Geburtsdatum,"
+					    + "Klassenstufe,"
+					    + "Geschlecht)"
+					    + "VALUES (?, ?, ?, ?, ?, ?)";
+			   try 
+			   {
 				    // set all the preparedstatement parameters
 				    java.sql.PreparedStatement st = conn.prepareStatement(query);
 				    st.setString(1, student.GetName());
-				    st.setString(2, student.GetKlassenStufe());
+				    st.setString(2, student.GetKlassenName());
 				    st.setString(3, student.GetVorname());
 				    st.setDate	(4, (Date) student.GetGeburtsdatum());
 				    st.setString(5, student.GetKlassenStufe());
@@ -105,7 +98,12 @@ public class Database
 
 				    // execute the preparedstatement insert
 				    st.executeUpdate();
+				    
+				    
 				    st.close();
+				    
+				    conn.close();
+				    System.out.print("Connection closed!\n");
 				  } 
 				  catch (SQLException se)
 				  {
