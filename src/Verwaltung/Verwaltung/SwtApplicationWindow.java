@@ -27,6 +27,9 @@ import Sql.Database;
 
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.mysql.jdbc.Connection;
+
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.widgets.TableColumn;
@@ -39,13 +42,13 @@ public class SwtApplicationWindow
     public java.util.List<Student> allStudents = new ArrayList<Student>();
     private Table table_Students;
     private Table table_Classes;
-
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) 
     {
 		try 
 		{
-			Database.Open("localhost", "3306", "root", null);
+			java.sql.Connection con = Database.Open("localhost", "3306", "root", null);
+			con.close();
 		} 
 		catch (SQLException e) 
 		{
@@ -117,26 +120,7 @@ public class SwtApplicationWindow
                     	
                     	for(Student student:allStudents) 
                     	{
-                    		try 
-                    		{
-                    			Database.insertNewStudent(
-                    					Database.Open(
-                    				"localhost"
-                    				, "3306"
-                    				, "root"
-                    				, null
-                    				)
-                    				, student
-                    				);
-                    		}
-                    		catch(SQLException ex) 
-                    		{
-            					ex.printStackTrace();
-                    		}
-                    		finally 
-                    		{
-                    			System.out.print("Successfully written into database!");
-                    		}
+                    		Database.insertNewStudent(Database.Open("localhost", "3306", "root", null), student);
                     	}
                     	
 					} 

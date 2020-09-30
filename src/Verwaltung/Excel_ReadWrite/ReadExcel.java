@@ -26,7 +26,7 @@ public class ReadExcel
 		FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
 		Workbook workbook = getWorkbook(inputStream, excelFilePath);
-		Sheet firstSheet = workbook.getSheetAt(1);
+		Sheet firstSheet = workbook.getSheetAt(0);
 		Iterator<Row> iterator = firstSheet.iterator();
 
 		while (iterator.hasNext()) 

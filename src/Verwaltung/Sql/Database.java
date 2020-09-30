@@ -1,14 +1,14 @@
 package Sql;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 import java.sql.Driver;
-import java.sql.DriverManager;
+import java.sql.*;
 
 import com.mysql.jdbc.*;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.ResultSet;
+import com.mysql.jdbc.Statement;
 
 import Verwaltung.Student;
 
@@ -53,9 +53,9 @@ public class Database
 		try
 		{
 			// Preparing the request query
-			Statement stmt = con.createStatement();  
+			Statement stmt = (Statement) con.createStatement();  
 			// Result 
-			ResultSet rs = stmt.executeQuery("select * from schueler");  
+			ResultSet rs = (ResultSet) stmt.executeQuery("select * from schueler");  
 			rs.absolute(0);
 			while(rs.next()) 
 			{
@@ -73,48 +73,44 @@ public class Database
 	}
 	
 	// Requests the complete Table "schueler from the Database excelmanagementdata.
-		public static void insertNewStudent(Connection connection, Student student) 
+		public static void insertNewStudent(Connection conn, Student student) 
+				throws ClassNotFoundException, SQLException 
 		{			
-			try
-			{
-				// Preparing the request query
-				Statement stmt = connection.createStatement();  
-				// Result 
-				ResultSet rs = stmt.executeQuery(
-						  "INSERT INTO schueler "
-						+ "("
-						+ "Name"
-						+ ","
-						+ "Klassenbezeichnung"
-						+ ","
-						+ "Vorname"
-						+ ","
-						+ "Geburtsdatum" 
-						+ ","
-						+ "Klassenstufe"
-						+ ","
-						+ " Geschlecht)\r\n"
-								
-								+ "VALUES ('" 
-								+ ((Student) student).GetName() 
-								+ "', '" 
-								+ ((Student) student).GetKlassenName() 
-								+ "', '" 
-								+ ((Student) student).GetVorname() 
-								+ "', '" 
-								+ ((Student) student).GetGeburtsdatum().toString() 
-								+ "', '" 
-								+ ((Student) student).GetKlassenName() 
-								+ "', '" 
-								+ ((Student) student).GetGeschlecht() 
-								+ "'); "
-								);		
-				connection.close();
-			} 
-			catch (SQLException e)
-			{
-					// TODO Auto-generated catch block
-					e.printStackTrace();		
-			}  
-		}
+			   // JDBC driver name and database URL
+			   final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+			   final String DB_URL = "jdbc:mysql://localhost/exceldatamanagement";
+
+			   //  Database credentials
+			   final String USER = "root";
+			   
+			   Statement stmt = null;
+			   String query = "INSERT INTO schueler ("
+					    + " Name,"
+					    + " Klassenname,"
+					    + " Vorname,"
+					    + " Geburtsdatum,"
+					    + " Klassenstufe,"
+					    + " Geschlecht,"
+					    + " VALUES ("
+					    + "?, ?, ?, ?, ?, ?)";
+			   try {
+				    // set all the preparedstatement parameters
+				    java.sql.PreparedStatement st = conn.prepareStatement(query);
+				    st.setString(1, student.GetName());
+				    st.setString(2, student.GetKlassenStufe());
+				    st.setString(3, student.GetVorname());
+				    st.setDate	(4, (Date) student.GetGeburtsdatum());
+				    st.setString(5, student.GetKlassenStufe());
+				    st.setString(6, student.GetGeschlecht());
+
+				    // execute the preparedstatement insert
+				    st.executeUpdate();
+				    st.close();
+				  } 
+				  catch (SQLException se)
+				  {
+				    // log exception
+				    throw se;
+				  }
+			}//end main
 }
