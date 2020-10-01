@@ -22,19 +22,19 @@ public class Classes {
 	
 	//Start getter
 	
-	/**Gibt die Liste mit den Schülern aus*/
+	/**Gets the list of the students*/
 	public List<Student> getSchueler()
 	{
 		return Schueler;
 	}
 
-	/**Gibt die Stufe der Klasse aus*/
+	/**Gets the grade of the class*/
 	public String getKlassenStufe()
 	{
 		return KlassenStufe;
 	}
 	
-	/**Gibt die Bezeichnung der Klasse aus*/
+	/**Gets the name of the class*/
 	public String getKlassenName()
 	{
 		return KlassenName;
@@ -43,19 +43,19 @@ public class Classes {
 	
 	//Start setter
 	
-	/** Setzt die Liste mit den Schülern*/
+	/** Sets the List of the students*/
 	public void setSchueler(List<Student> newSchueler)
 	{
 		this.Schueler = newSchueler;
 	}
 	
-	/**Setzt die Stufe der Klasse*/
+	/**Sets the grade of the class*/
 	public void setKlassenStufe(String newKlassenStufe) 
 	{
 		this.KlassenStufe = newKlassenStufe;
 	}
 	
-	/** Setzt die Bezeichnung der Klasse*/
+	/** Sets the name of the class*/
 	public void setKlassenName(String newKlassenName)
 	{
 		this.KlassenName = newKlassenName;
